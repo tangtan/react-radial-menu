@@ -50,7 +50,10 @@ class RadialMenu extends Component {
 	createItems = items => {
         const {
             distance,
-            itemsSize
+						itemsSize,
+						isClockWise,
+						beginDeg,
+						endDeg
         } = this.props
 		const length = items.length;
 		const result = [];
@@ -58,8 +61,13 @@ class RadialMenu extends Component {
 
 		for (let i = 0; i < length; i++) {
 			const item = items[i];
-			left = `${(itemsSize + distance) * (-1) * (Math.cos(-0.5 * Math.PI - (2 * Math.PI * i) / length))}px`;
-			top = `${(itemsSize + distance) * (Math.sin(-0.5 * Math.PI - (2 * Math.PI * i) / length))}px`;
+			const clockFactor = isClockWise ? 1 : -1;
+			const beginRad = beginDeg / 180 * Math.PI;
+			const endRad = endDeg / 180 * Math.PI;
+			// left = `${(itemsSize + distance) * clockFactor * (Math.cos(-0.5 * Math.PI - (2 * Math.PI * i) / length))}px`;
+			// top = `${(itemsSize + distance) * (Math.sin(-0.5 * Math.PI - (2 * Math.PI * i) / length))}px`;
+			left = `${(itemsSize + distance) * clockFactor * (Math.cos(beginRad + ((endRad - beginRad) * i) / length))}px`;
+			top = `${(itemsSize + distance) * (Math.sin(beginRad + ((endRad - beginRad) * i) / length))}px`;
 
 			result.push(<RadialItem
                 key={i}
@@ -135,7 +143,10 @@ RadialMenu.propTypes = {
     easing: PropTypes.array,
     distance: PropTypes.number,
     center: PropTypes.object.isRequired,
-    items: PropTypes.array.isRequired
+		items: PropTypes.array.isRequired,
+		beginDeg: PropTypes.number,
+		endDeg: PropTypes.number,
+		isClockWise: PropTypes.bool
 }
 
 RadialMenu.defaultProps = {
@@ -144,7 +155,10 @@ RadialMenu.defaultProps = {
     stagger: 100,
     itemsSize: 100,
     easing: [0.175, 0.885, 0.32, 1.275],
-    distance: 30
+		distance: 30,
+		beginDeg: 0,
+		endDeg: 360,
+		isClockWise: true
 }
 
 export default RadialMenu
