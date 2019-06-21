@@ -103,15 +103,23 @@ function (_Component) {
     _defineProperty(_assertThisInitialized(_this), "createItems", function (items) {
       var _this$props2 = _this.props,
           distance = _this$props2.distance,
-          itemsSize = _this$props2.itemsSize;
+          itemsSize = _this$props2.itemsSize,
+          isClockWise = _this$props2.isClockWise,
+          beginDeg = _this$props2.beginDeg,
+          endDeg = _this$props2.endDeg;
       var length = items.length;
       var result = [];
       var top, left;
 
       for (var i = 0; i < length; i++) {
         var item = items[i];
-        left = "".concat((itemsSize + distance) * -1 * Math.cos(-0.5 * Math.PI - 2 * Math.PI * i / length), "px");
-        top = "".concat((itemsSize + distance) * Math.sin(-0.5 * Math.PI - 2 * Math.PI * i / length), "px");
+        var clockFactor = isClockWise ? 1 : -1;
+        var beginRad = beginDeg / 180 * Math.PI;
+        var endRad = endDeg / 180 * Math.PI; // left = `${(itemsSize + distance) * clockFactor * (Math.cos(-0.5 * Math.PI - (2 * Math.PI * i) / length))}px`;
+        // top = `${(itemsSize + distance) * (Math.sin(-0.5 * Math.PI - (2 * Math.PI * i) / length))}px`;
+
+        left = "".concat((itemsSize + distance) * clockFactor * Math.cos(beginRad + (endRad - beginRad) * i / length), "px");
+        top = "".concat((itemsSize + distance) * Math.sin(beginRad + (endRad - beginRad) * i / length), "px");
         result.push(_react.default.createElement(_RadialItem.default, {
           key: i,
           size: itemsSize,
@@ -197,7 +205,10 @@ RadialMenu.propTypes = {
   easing: _propTypes.default.array,
   distance: _propTypes.default.number,
   center: _propTypes.default.object.isRequired,
-  items: _propTypes.default.array.isRequired
+  items: _propTypes.default.array.isRequired,
+  beginDeg: _propTypes.default.number,
+  endDeg: _propTypes.default.number,
+  isClockWise: _propTypes.default.bool
 };
 RadialMenu.defaultProps = {
   animation: "transition.swoopIn",
@@ -205,7 +216,10 @@ RadialMenu.defaultProps = {
   stagger: 100,
   itemsSize: 100,
   easing: [0.175, 0.885, 0.32, 1.275],
-  distance: 30
+  distance: 30,
+  beginDeg: 0,
+  endDeg: 360,
+  isClockWise: true
 };
 var _default = RadialMenu;
 exports.default = _default;
