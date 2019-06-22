@@ -31,8 +31,8 @@ class RadialItem extends Component {
       	};
 
         if (image !== "none") {
-            itemStyle.border = "none";
-            itemStyle.boxShadow = "none";
+            // itemStyle.border = "none";
+            // itemStyle.boxShadow = "none";
 
             if (className !== "radial-menu-button") {
                 itemStyle.backgroundColor = "transparent";
