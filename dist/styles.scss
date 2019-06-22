@@ -19,10 +19,11 @@
   text-decoration: none;
   text-align: center;
   color: #444;
-  border: 2px solid #A83434;
+  // border: 2px solid #A83434;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
+  box-shadow: 2px 2px 5px -1px #000000;
 }
 
 .radial-menu-button:hover {
